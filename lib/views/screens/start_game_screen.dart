@@ -5,14 +5,14 @@ import 'package:projet_wordlink/services/timer_service.dart';
 import 'package:projet_wordlink/viewmodels/game_view_model.dart';
 import 'package:provider/provider.dart';
 
-class GameScreen extends StatefulWidget {
-  const GameScreen({super.key});
+class StartGameScreen extends StatefulWidget {
+  const StartGameScreen({super.key});
 
   @override
-  _GameScreenState createState() => _GameScreenState();
+  _StartGameScreenState createState() => _StartGameScreenState();
 }
 
-class _GameScreenState extends State<GameScreen> {
+class _StartGameScreenState extends State<StartGameScreen> {
   late GameViewModel _viewModel;
   final TextEditingController _startWordController = TextEditingController();
   final TextEditingController _targetWordController = TextEditingController();

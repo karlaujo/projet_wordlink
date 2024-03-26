@@ -1,7 +1,7 @@
-import 'dart:async';
 import 'package:flutter/material.dart';
-import 'package:projet_wordlink/services/dictionary_service.dart';
-import 'package:projet_wordlink/views/screens/game_screen.dart';
+import 'package:projet_wordlink/views/screens/game_screen/game_screen.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:projet_wordlink/generated/app_localizations.dart';
 
 void main() {
   runApp(MyApp());
@@ -10,12 +10,19 @@ void main() {
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
+    return const MaterialApp(
       title: 'WordLink',
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
-      ),
-      home: const GameScreen(),
+      localizationsDelegates: [
+      AppLocalizations.delegate,
+      GlobalMaterialLocalizations.delegate,
+      GlobalWidgetsLocalizations.delegate,
+      GlobalCupertinoLocalizations.delegate,
+    ],
+    supportedLocales: [
+      Locale('en'), // English
+      Locale('fr'), // Francais
+    ],
+      home: GameScreen(language: 'fr'),
     );
   }
 }

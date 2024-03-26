@@ -20,8 +20,8 @@ class DictionaryRepositoryImpl implements DictionaryRepository {
       try {
         final response = await _dictionaryService.loadWords(dictionaryUrl);
         if (response.statusCode == 200) {
-          final Map<String, dynamic> jsonBody = jsonDecode(response.body);
-          return jsonBody.containsKey(word);
+          final String jsonString = await rootBundle.loadString(dictionaryUrl);
+          return jsonString.contains(word);
         } else {
           throw Exception('Failed to load words from remote URL');
         }
@@ -34,8 +34,7 @@ class DictionaryRepositoryImpl implements DictionaryRepository {
       // Handle local dictionary
       try {
         final String jsonString = await rootBundle.loadString(dictionaryUrl);
-        final Map<String, dynamic> jsonBody = jsonDecode(jsonString);
-        return jsonBody.containsKey(word);
+        return jsonString.contains(word);
       } catch (e) {
         print(e.toString());
         // Handle error or throw a custom exception

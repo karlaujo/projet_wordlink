@@ -1,5 +1,7 @@
 import 'dart:async';
+import 'dart:convert';
 import 'package:flutter/foundation.dart';
+import 'package:flutter/services.dart';
 import 'package:projet_wordlink/repositories/dictionary_repository.dart';
 import 'package:projet_wordlink/services/timer_service.dart';
 
@@ -21,6 +23,35 @@ class GameViewModel extends ChangeNotifier {
   List<String> get emptyBubbles => _emptyBubbles;
 
   GameViewModel(this._dictionaryRepository, this._timerService);
+
+  //Translation of the app
+  String _selectedLanguage = 'fr';
+  Map<String, dynamic>? _translations;
+
+  String get selectedLanguage => _selectedLanguage;
+
+  set selectedLanguage(String language) {
+    _selectedLanguage = language;
+    loadTranslations().then((_) {
+      notifyListeners();
+    });
+  }
+
+  Future<void> loadTranslations() async {
+    String translations;
+    if (_selectedLanguage == 'en') {
+      translations = await rootBundle.loadString('lib/ressources/assets/en.json');
+    } else {
+      translations = await rootBundle.loadString('lib/ressources/assets/fr.json');
+    }
+
+    _translations = jsonDecode(translations);
+  }
+
+  String translate(String key) {
+    return _translations?[key] ?? key;
+  }
+
 
   // Method to update the dictionary URL
   void updateDictionaryUrl(String newUrl) {
@@ -97,4 +128,6 @@ void _onTimerTick() {
     _gameTimer?.cancel();
     super.dispose();
   }
+
+  void setLanguage(String lang) {}
 }

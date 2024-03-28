@@ -1,127 +1,202 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:projet_wordlink/repositories/dictionary_repository.dart';
 import 'package:projet_wordlink/services/dictionary_service.dart';
 import 'package:projet_wordlink/services/timer_service.dart';
 import 'package:projet_wordlink/viewmodels/game_view_model.dart';
+import 'package:projet_wordlink/generated/app_localizations.dart';
+import 'package:projet_wordlink/views/screens/game_screen/game_screen.dart';
+import 'package:projet_wordlink/views/widgets/timer_widget/timer_widget.dart';
 import 'package:provider/provider.dart';
 
 class StartGameScreen extends StatefulWidget {
-  const StartGameScreen({super.key});
+  final String language;
+  final int selectedLevel;
+  const StartGameScreen({Key? key, required this.language, required this.selectedLevel}) : super(key: key);
 
   @override
   _StartGameScreenState createState() => _StartGameScreenState();
 }
 
 class _StartGameScreenState extends State<StartGameScreen> {
-  late GameViewModel _viewModel;
-  final TextEditingController _startWordController = TextEditingController();
-  final TextEditingController _targetWordController = TextEditingController();
+  final List<TextEditingController> _wordControllers = [];
+  final GameViewModel _viewModel = GameViewModel(DictionaryRepositoryImpl(LocalDictionaryService()), TimerService());
+
+  final String _startWord =''; 
+  final String _endWord ='';
 
   @override
   void initState() {
     super.initState();
-    _viewModel = GameViewModel(DictionaryRepositoryImpl(LocalDictionaryService()), TimerService());
+    _wordControllers.addAll(List.generate(_endWord.length - _startWord.length - 1, (index) => TextEditingController()));
+  }
+
+  @override
+  void dispose() {
+    for (final controller in _wordControllers) {
+      controller.dispose();
+    }
+    super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
-    return ChangeNotifierProvider.value(
-      value: _viewModel,
-      child: Scaffold(
-        appBar: AppBar(title: const Text('WordLink')),
-        body: Column(
+    return Provider<TimerService>(create: (context) => TimerService(),
+    child: Scaffold(
+      body: Container(
+        decoration: const BoxDecoration(
+          gradient: LinearGradient(
+            begin: Alignment.topCenter,
+            end: Alignment.bottomCenter,
+            colors: [
+              Color(0xFF6B8E23),
+              Color(0xFFFFFFFF),
+            ],
+          ),
+        ),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
-            TextField(
-              controller: _startWordController,
-              decoration: const InputDecoration(
-                labelText: 'Start Word',
-              ),
-            ),
-            TextField(
-              controller: _targetWordController,
-              decoration: const InputDecoration(
-                labelText: 'Target Word',
-              ),
-            ),
-            ElevatedButton(
-              onPressed: () async {
-                final startWord = _startWordController.text.trim();
-                final targetWord = _targetWordController.text.trim();
-                
-                if (_viewModel.wordChain.isEmpty) {
-                  final isStartWordValid = await _viewModel.validateWord(startWord);
-                  if (isStartWordValid) {
-                    _viewModel.addWord(startWord);
-                  } else {
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      SnackBar(content: Text('The start word is not valid.')),
-                    );
-                  }
-                } else if (_viewModel.wordChain.length == 1) {
-                  final isTargetWordValid = await _viewModel.validateWord(targetWord);
-                  if (isTargetWordValid) {
-                    _viewModel.addWord(targetWord);
-                  } else {
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      SnackBar(content: Text('The target word is not valid.')),
-                    );
-                  }
-                }
-              },
-              child: const Text('Submit'),
-            ),
-            StreamBuilder<int>(
-              stream: _viewModel.timerService.timeStream,
-              builder: (context, snapshot) {
-                final remainingTime = snapshot.data ?? 120;
-                return Text(
-                  'Time remaining: $remainingTime seconds',
-                  style: const TextStyle(fontSize: 18),
-                );
-              },
-            ),
-            if (_viewModel.wordChain.isNotEmpty && !_viewModel.gameStarted)
-              Chip(
-                label: Text(_viewModel.wordChain.first),
-              ),
-            if (_viewModel.wordChain.length > 1 && !_viewModel.gameStarted)
-              Chip(
-                label: Text(_viewModel.wordChain[1]),
-              ),
-            const SizedBox(height: 20),
-            if (_viewModel.gameStarted)
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: <Widget>[
-                  Chip(
-                    label: Text(_viewModel.wordChain.first),
+            const SizedBox(height: 40),
+            Text(
+              'WordLink',
+              textAlign: TextAlign.center,
+              style: GoogleFonts.pacifico(
+                fontSize: 48,
+                color: Colors.white,
+                shadows: [
+                  const Shadow(
+                    color: Colors.black,
+                    offset: Offset(2, 2),
+                    blurRadius: 4,
                   ),
-                  ..._viewModel.emptyBubbles.map((word) => Chip(
-                    label: Text(word.isEmpty ? "" : word),
-                  )).toList(),
-                  if (_viewModel.wordChain.length > 1)
-                    Chip(
-                      label: Text(_viewModel.wordChain[1]),
-                    ),
                 ],
               ),
-            if (!_viewModel.gameStarted && _viewModel.wordChain.length == 2)
-              ElevatedButton(
-                onPressed: () {
-                  _viewModel.startGame(_startWordController.text.trim(), _targetWordController.text.trim());
-                },
-                child: const Text('Start'),
+            ),
+            const SizedBox(height: 40),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: [
+                _buildWordBubble(_startWord),
+                _buildWordBubble(_endWord),
+              ],
+            ),
+            const SizedBox(height: 16.0),
+            ..._buildWordTextFields(),
+            const SizedBox(height: 16.0),
+            ElevatedButton(
+              onPressed: () async {
+                final words = [_startWord, ..._wordControllers.map((controller) => controller.text.trim()), _endWord];
+                bool isValid = true;
+                for (int i = 1; i < words.length; i++) {
+                  isValid = await _viewModel.validateWord(words[i], words[i - 1], _endWord);
+                  if (!isValid) break;
+                }
+                showDialog(
+                  context: context,
+                  builder: (context) => AlertDialog(
+                    title: Text(isValid ? AppLocalizations.of(context)!.validChain : AppLocalizations.of(context)!.invalidChain),
+                    content: Text(isValid ? AppLocalizations.of(context)!.validChainMessage : AppLocalizations.of(context)!.invalidChainMessage),
+                    actions: [
+                      TextButton(
+                        onPressed: () { Navigator.pop(context);
+                        if (isValid){
+                          Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => GameScreen(language: _viewModel.selectedLanguage,),
+                          ),
+                        );
+                        }
+                        },
+                        child: Text('OK'),
+                      ),
+                    ],
+                  ),
+                );
+              },
+              style: ElevatedButton.styleFrom(
+                shape: const StadiumBorder(),
+                backgroundColor: const Color(0xFF9CCC65),
+                elevation: 4,
               ),
-            if (_viewModel.gameStarted)
-              ElevatedButton(
-                onPressed: () {
-                  _viewModel.restartGame();
-                },
-                child: const Text('Restart'),
+              child: Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
+                child: Text(AppLocalizations.of(context)!.verify),
               ),
+            ),
+            const Spacer(),
+            // const Padding(
+            //   padding: EdgeInsets.all(16.0),
+            //   child: TimerWidget()
+            // ),
           ],
         ),
       ),
+    )
     );
+  }
+
+  Widget _buildWordBubble(String word) {
+    return Container(
+      padding: const EdgeInsets.all(16.0),
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(24.0),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withOpacity(0.2),
+            offset: const Offset(0, 2),
+            blurRadius: 4,
+          ),
+        ],
+      ),
+      child: Text(
+        word,
+        style: const TextStyle(fontSize: 18),
+      ),
+    );
+  }
+
+  List<Widget> _buildWordTextFields() {
+    return List.generate(_wordControllers.length, (index) {
+      final controller = _wordControllers[index];
+      return Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
+        child: TextField(
+          controller: controller,
+          decoration: InputDecoration(
+            hintText: AppLocalizations.of(context)!.enterWord,
+            filled: true,
+            fillColor: Colors.white,
+            border: const OutlineInputBorder(),
+            suffixIcon: ValueListenableBuilder<TextEditingValue>(
+              valueListenable: controller,
+              builder: (context, value, child) {
+                if (value.text.isEmpty) {
+                  return const SizedBox.shrink();
+                } else {
+                  return FutureBuilder<bool>(
+                    future: _viewModel.validateWord(value.text.trim(), index == 0 ? _startWord : _wordControllers[index - 1].text.trim(), _endWord),
+                    builder: (context, snapshot) {
+                      if (snapshot.connectionState == ConnectionState.waiting) {
+                        return const CircularProgressIndicator();
+                      } else if (snapshot.hasData && snapshot.data!) {
+                        return const Icon(Icons.check, color: Colors.green);
+                      } else {
+                        return IconButton(
+                          icon: const Icon(Icons.close, color: Colors.red),
+                          onPressed: () => controller.clear(),
+                        );
+                      }
+                    },
+                  );
+                }
+              },
+            ),
+          ),
+        ),
+      );
+    });
   }
 }

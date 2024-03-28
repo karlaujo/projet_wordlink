@@ -134,6 +134,20 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Hard'**
   String get hard;
+
+  String get validChain;
+
+  String get invalidChain;
+
+  String get validChainMessage;
+
+  String get invalidChainMessage;
+
+  String get verify;
+
+  String get enterWord;
+
+  String get isValidWord;
 }
 
 class _AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {

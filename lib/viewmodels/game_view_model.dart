@@ -59,7 +59,7 @@ class GameViewModel extends ChangeNotifier {
     notifyListeners();
   }
 
-  Future<bool> validateWord(String newWord) async {
+  Future<bool> validateWord(String newWord, String word, String endWord) async {
   if (_wordChain.isEmpty) {
     // If the word chain is empty, it means we are validating the start word
     final existsInDictionary = await _dictionaryRepository.wordExists(newWord, _dictionaryUrl);
@@ -130,4 +130,8 @@ void _onTimerTick() {
   }
 
   void setLanguage(String lang) {}
+
+  void isValidWord(String newWord, String prevWord, String endWord) {
+    
+  }
 }

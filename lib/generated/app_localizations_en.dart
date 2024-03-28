@@ -24,4 +24,33 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get hard => 'Hard';
+
+  @override
+  String get validChain => 'Good Answer :)';
+  
+  @override
+  // TODO: implement enterWord
+  String get enterWord => 'Enter Word';
+  
+  @override
+  // TODO: implement invalidChain
+  String get invalidChain => 'Wrong answer :(';
+  
+  @override
+  // TODO: implement invalidChainMessage
+  String get invalidChainMessage => 'Try again !';
+  
+  @override
+  // TODO: implement isValidWord
+  String get isValidWord => 'Valid';
+  
+  @override
+  // TODO: implement validChainMessage
+  String get validChainMessage => 'Good Job !';
+  
+  @override
+  // TODO: implement verify
+  String get verify => 'Verify';
+  
+
 }

@@ -12,6 +12,7 @@ import 'package:projet_wordlink/generated/app_localizations.dart';
 
 class GameScreen extends StatefulWidget {
   final String language;
+  String get _language => language;
   const GameScreen({Key? key, required this.language, localizationsDelegates= AppLocalizations.localizationsDelegates,
   supportedLocales= AppLocalizations.supportedLocales,}) : super(key: key);
 
@@ -33,6 +34,8 @@ class _GameScreenState extends State<GameScreen> {
       'hard': 'Hard',
     },
   );
+  
+  String get _language => widget.language;
 
   @override
   void initState() {
@@ -88,7 +91,7 @@ class _GameScreenState extends State<GameScreen> {
                   ),
                   child:  Padding(
                     padding: EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
-                    child: Text(translations.text(AppLocalizations.of(context)!.dictionary)),
+                    child: Text(AppLocalizations.of(context)!.dictionary),
                   ),
                 ),
                 ElevatedButton(
@@ -120,7 +123,7 @@ class _GameScreenState extends State<GameScreen> {
                     Navigator.push(
                       context,
                       MaterialPageRoute(
-                        builder: (context) => const StartGameScreen()
+                        builder: (context) => StartGameScreen(language: _language, selectedLevel: _selectedLevel,)
                       ),
                     );
                   },

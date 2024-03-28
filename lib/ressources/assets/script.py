@@ -1,17 +1,19 @@
 import json
+import re
 
-# Load the JSON data from the file
-with open('dictionary_old.json', 'r') as file:
+# Load the JSON data
+with open('dictionary_old.json', 'r', encoding='utf-8') as file:
     data = json.load(file)
 
-# Create a new dictionary to store the unique data
-unique_data = {}
+# Define a function to replace \u00e9 with é
+def replace_e_accent(match):
+    return 'é'
 
-# Iterate over the dictionary and remove duplicates
-for word, description in data.items():
-    if word not in unique_data:
-        unique_data[word] = description
+# Use a regular expression to find and replace \u00e9
+pattern = r'\\u00e9'
+for key in data:
+    data[key] = re.sub(pattern, replace_e_accent, data[key])
 
-# Save the unique data to a new JSON file
-with open('dictionary.json', 'w') as file:
-    json.dump(unique_data, file, indent=4)
+# Save the modified JSON data
+with open('dictionary.json', 'w', encoding='utf-8') as file:
+    json.dump(data, file, ensure_ascii=False, indent=4)

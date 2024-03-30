@@ -117,7 +117,7 @@ class _StartGameScreenState extends State<StartGameScreen> {
                 final words = [_startWord, ..._wordControllers.map((controller) => controller.text.trim()), _endWord];
                 bool isValid = true;
                 for (int i = 1; i < words.length; i++) {
-                  isValid = await _viewModel.validateWord(words[i], words[i - 1], _endWord);
+                  isValid = await _viewModel.validateWordInChain(words[i - 1], words[i], _endWord);
                   if (!isValid) break;
                 }
                 showDialog(

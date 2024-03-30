@@ -41,7 +41,7 @@ class _GameScreenState extends State<GameScreen> {
   @override
   void initState() {
     super.initState();
-    _viewModel = GameViewModel(DictionaryRepositoryImpl(LocalDictionaryService()), TimerService());
+    _viewModel = GameViewModel(DictionaryRepositoryImpl(RemoteDictionaryService()), TimerService());
     _viewModel.selectedLanguage = (widget.language);
   }
 

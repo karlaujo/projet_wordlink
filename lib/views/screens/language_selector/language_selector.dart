@@ -22,7 +22,7 @@ class _LanguageSelectorScreenState extends State<LanguageSelectorScreen> {
   @override
   void initState() {
     super.initState();
-    _viewModel = GameViewModel(DictionaryRepositoryImpl(LocalDictionaryService()), TimerService());
+    _viewModel = GameViewModel(DictionaryRepositoryImpl(RemoteDictionaryService()), TimerService());
   }
   @override
   Widget build(BuildContext context) {

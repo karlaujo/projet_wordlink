@@ -154,10 +154,24 @@ class _StartGameScreenState extends State<StartGameScreen> {
               ),
             ),
             const Spacer(),
-            // const Padding(
-            //   padding: EdgeInsets.all(16.0),
-            //   child: TimerWidget()
-            // ),
+            Padding(
+              padding: const EdgeInsets.all(16.0),
+              child: TimerWidget(
+                timerService: Provider.of<TimerService>(context),
+                style: TextStyle(
+                  fontSize: 24.0,
+                  fontWeight: FontWeight.bold,
+                  color: Colors.white,
+                  shadows: [
+                    Shadow(
+                      color: Colors.black.withOpacity(0.5),
+                      offset: const Offset(2, 2),
+                      blurRadius: 4,
+                    ),
+                  ],
+                ),
+              ),
+            ),
           ],
         ),
       ),

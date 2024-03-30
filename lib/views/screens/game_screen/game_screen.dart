@@ -128,7 +128,10 @@ class _GameScreenState extends State<GameScreen> {
                         Navigator.push(
                           context,
                           MaterialPageRoute(
-                            builder: (context) => StartGameScreen(language: widget.language, selectedLevel: _selectedLevel, viewModel: _viewModel)
+                            builder: (context) => Provider<TimerService>(
+                                create: (_) =>TimerService(),
+                                child: StartGameScreen(language: widget.language, selectedLevel: _selectedLevel, viewModel: _viewModel)
+                            ),
                           ),
                         );
                       },

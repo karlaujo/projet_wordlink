@@ -132,7 +132,7 @@ class _StartGameScreenState extends State<StartGameScreen> {
                           Navigator.push(
                           context,
                           MaterialPageRoute(
-                            builder: (context) => GameScreen(language: _viewModel.selectedLanguage,),
+                            builder: (context) => GameScreen(viewModel: _viewModel, language: _viewModel.selectedLanguage,),
                           ),
                         );
                         }

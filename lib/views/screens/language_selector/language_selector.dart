@@ -7,8 +7,9 @@ import 'package:projet_wordlink/views/screens/game_screen/game_screen.dart';
 
 class LanguageSelectorScreen extends StatefulWidget {
   final Function(String) onLanguageSelected;
+  final GameViewModel viewModel;
 
-  const LanguageSelectorScreen({Key? key, required this.onLanguageSelected})
+  const LanguageSelectorScreen({Key? key, required this.onLanguageSelected, required this.viewModel})
       : super(key: key);
 
   @override
@@ -17,12 +18,12 @@ class LanguageSelectorScreen extends StatefulWidget {
 
 class _LanguageSelectorScreenState extends State<LanguageSelectorScreen> {
   String _selectedLanguage = 'fr'; // Default language is French
-  late GameViewModel _viewModel;
+  late final GameViewModel _viewModel;
   
   @override
   void initState() {
     super.initState();
-    _viewModel = GameViewModel(DictionaryRepositoryImpl(RemoteDictionaryService()), TimerService());
+    _viewModel = widget.viewModel;
   }
   @override
   Widget build(BuildContext context) {
@@ -79,7 +80,7 @@ class _LanguageSelectorScreenState extends State<LanguageSelectorScreen> {
                   Navigator.push(
                     context,
                     MaterialPageRoute(
-                      builder: (context) => GameScreen(language: _selectedLanguage),
+                      builder: (context) => GameScreen(viewModel: _viewModel, language: _selectedLanguage),
                     ),
                   );
                 },

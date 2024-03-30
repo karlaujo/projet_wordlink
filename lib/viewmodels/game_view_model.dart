@@ -26,6 +26,8 @@ class GameViewModel extends ChangeNotifier {
 
   //Translation of the app
   String _selectedLanguage = 'fr';
+  String _language = 'fr';
+  String get language => _language;
   Map<String, dynamic>? _translations;
 
   String get selectedLanguage => _selectedLanguage;
@@ -35,6 +37,11 @@ class GameViewModel extends ChangeNotifier {
     loadTranslations().then((_) {
       notifyListeners();
     });
+  }
+
+  void setLanguage(String lang){
+    _language = lang;
+    notifyListeners();
   }
 
   Future<void> loadTranslations() async {
@@ -137,8 +144,6 @@ void _onTimerTick() {
     _gameTimer?.cancel();
     super.dispose();
   }
-
-  void setLanguage(String lang) {}
 
   void isValidWord(String newWord, String prevWord, String endWord) {
     

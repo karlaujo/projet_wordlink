@@ -59,27 +59,35 @@ class GameViewModel extends ChangeNotifier {
     notifyListeners();
   }
 
-  Future<bool> validateWord(String newWord, String word, String endWord) async {
+  Future<bool> validateWord(String previousWord, String newWord, String endWord) async {
   if (_wordChain.isEmpty) {
-    // If the word chain is empty, it means we are validating the start word
+    // Si la chaîne de mots est vide, cela signifie que nous validons le mot de départ
     final existsInDictionary = await _dictionaryRepository.wordExists(newWord, _dictionaryUrl);
     return existsInDictionary;
-  } else if (_wordChain.length == 1) {
-    // If the word chain has only one word, it means we are validating the target word
-    final startWord = _wordChain.first;
-    final isLongerByAtLeastTwo = newWord.length >= startWord.length + 2;
-    final containsAllLetters = startWord.split('').every((char) => newWord.contains(char));
+  } if (newWord == endWord) {
+    // Si le nouveau mot est le mot cible, nous le validons
+    final isLongerByAtLeastTwo = newWord.length >= previousWord.length + 2;
+    final containsAllLetters = previousWord.split('').every((char) => newWord.contains(char));
     final existsInDictionary = await _dictionaryRepository.wordExists(newWord, _dictionaryUrl);
     return isLongerByAtLeastTwo && containsAllLetters && existsInDictionary;
-  } else {
+  }
+  // Pour les mots intermédiaires, nous utilisons les règles de validation existantes
+  final isLongerByOne = newWord.length == previousWord.length + 1;
+  final containsAllLetters = previousWord.split('').every((char) => newWord.contains(char));
+  final lettersInEndWord = newWord.split('').every((char) => endWord.contains(char));
+  final existsInDictionary = await _dictionaryRepository.wordExists(newWord, _dictionaryUrl);
+  return isLongerByOne && containsAllLetters && existsInDictionary && lettersInEndWord;
+  
+}
+
+Future<bool> validateWordInChain(String previousWord, String newWord, String endWord) async {
     // For subsequent words, use the existing validation logic
-    final lastWord = _wordChain.last;
-    final isLongerByOne = newWord.length == lastWord.length + 1;
-    final containsAllLetters = lastWord.split('').every((char) => newWord.contains(char));
-    final lettersInEndWord = newWord.split('').every((char) => lastWord.contains(char));
+    final isLongerByOne = newWord.length == previousWord.length + 1;
+    final containsAllLetters = previousWord.split('').every((char) => newWord.contains(char));
+    final lettersInEndWord = newWord.split('').every((char) => endWord.contains(char));
     final existsInDictionary = await _dictionaryRepository.wordExists(newWord, _dictionaryUrl);
     return isLongerByOne && containsAllLetters && existsInDictionary && lettersInEndWord;
-  }
+  
 }
 
   void startGame(String startWord, String targetWord) {
@@ -134,5 +142,13 @@ void _onTimerTick() {
 
   void isValidWord(String newWord, String prevWord, String endWord) {
     
+  }
+
+  void removeWord(String value) {
+    _wordChain.remove(value);
+    // if (newWord == _targetWord) {
+    //   _endGame(success: true);
+    // }
+    notifyListeners();
   }
 }

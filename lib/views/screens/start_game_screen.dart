@@ -78,6 +78,14 @@ class _StartGameScreenState extends State<StartGameScreen> {
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
             const SizedBox(height: 40),
+             IconButton(
+              icon: const Icon(Icons.arrow_back),
+              color: Colors.white,
+              onPressed: (){
+                Navigator.pop(context);
+              },
+            ),
+            const SizedBox(width: 10,),
             Text(
               'WordLink',
               textAlign: TextAlign.center,
@@ -185,6 +193,15 @@ class _StartGameScreenState extends State<StartGameScreen> {
         padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
         child: TextField(
           controller: controller,
+          onChanged: (value) {
+          if (value.isNotEmpty) {
+            // Add each letter to the word chain
+            _viewModel.addWord(value[value.length - 1]);
+          } else {
+            // Remove letters from the word chain when the word is deleted
+            _viewModel.removeWord(value[value.length - 1]);
+          }
+        },
           decoration: InputDecoration(
             hintText: AppLocalizations.of(context)!.enterWord,
             filled: true,
@@ -197,11 +214,12 @@ class _StartGameScreenState extends State<StartGameScreen> {
                   return const SizedBox.shrink();
                 } else {
                   return FutureBuilder<bool>(
-                    future: _viewModel.validateWord(value.text.trim(), index == 0 ? _startWord : _wordControllers[index - 1].text.trim(), _endWord),
+                    future: _viewModel.validateWordInChain(index == 0 ? _startWord : _wordControllers[index - 1].text.trim(), value.text.trim(), _endWord),
                     builder: (context, snapshot) {
                       if (snapshot.connectionState == ConnectionState.waiting) {
                         return const CircularProgressIndicator();
                       } else if (snapshot.hasData && snapshot.data!) {
+                        _viewModel.addWord(value.text.trim());
                         return const Icon(Icons.check, color: Colors.green);
                       } else {
                         return IconButton(

@@ -51,7 +51,7 @@ class _DictionarySelectorScreenState extends State<DictionarySelectorScreen> {
             const SizedBox(height: 20),
             ElevatedButton(
               onPressed: () {
-                widget.onDictionarySelected('assets');
+                widget.onDictionarySelected('lib/ressources/assets/dictionary.json');
                 Navigator.pop(context);
               },
               style: ElevatedButton.styleFrom(

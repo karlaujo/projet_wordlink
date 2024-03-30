@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:projet_wordlink/repositories/dictionary_repository.dart';
-import 'package:projet_wordlink/services/dictionary_service.dart';
-import 'package:projet_wordlink/services/timer_service.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:projet_wordlink/viewmodels/game_view_model.dart';
 import 'package:projet_wordlink/views/screens/game_screen/game_screen.dart';
+import 'package:projet_wordlink/generated/app_localizations.dart';
 
 class LanguageSelectorScreen extends StatefulWidget {
   final Function(String) onLanguageSelected;
@@ -19,18 +18,16 @@ class LanguageSelectorScreen extends StatefulWidget {
 class _LanguageSelectorScreenState extends State<LanguageSelectorScreen> {
   String _selectedLanguage = 'fr'; // Default language is French
   late final GameViewModel _viewModel;
-  
+
   @override
   void initState() {
     super.initState();
     _viewModel = widget.viewModel;
   }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Select Language'),
-      ),
       body: Container(
         decoration: const BoxDecoration(
           gradient: LinearGradient(
@@ -42,52 +39,97 @@ class _LanguageSelectorScreenState extends State<LanguageSelectorScreen> {
             ],
           ),
         ),
-        child: Center(
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              ElevatedButton(
-                onPressed: () {
-                  _viewModel.selectedLanguage = 'fr';
-                  setState(() {
-                    _selectedLanguage = 'fr';
-                  });
-                  widget.onLanguageSelected('fr');
-                },
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: _selectedLanguage == 'fr' ? Colors.blue : Colors.grey,
-                ),
-                child: const Text('Français'),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Text(
+              AppLocalizations.of(context)!.selectLanguage,
+              style: GoogleFonts.roboto(
+                fontSize: 24,
+                fontWeight: FontWeight.bold,
+                color: Colors.white,
               ),
-              const SizedBox(width: 16),
-              ElevatedButton(
-                onPressed: () {
-                  _viewModel.selectedLanguage = 'en';
-                  setState(() {
-                    _selectedLanguage = 'en';
-                  });
-                  widget.onLanguageSelected('en');
-                },
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: _selectedLanguage == 'en' ? Colors.blue : Colors.grey,
-                ),
-                child: const Text('English'),
-              ),
-              const SizedBox(height: 20), // Add spacing
-              ElevatedButton(
-                onPressed: () {
-                  // Use the current _selectedLanguage to navigate
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => GameScreen(viewModel: _viewModel, language: _selectedLanguage),
+            ),
+            const SizedBox(height: 20),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                ElevatedButton(
+                  onPressed: () {
+                    _viewModel.selectedLanguage = 'fr';
+                    setState(() {
+                      _selectedLanguage = 'fr';
+                    });
+                    widget.onLanguageSelected('fr');
+                  },
+                  style: ElevatedButton.styleFrom(
+                    shape: const StadiumBorder(),
+                    backgroundColor: _selectedLanguage == 'fr' ? const Color(0xFF9CCC65) : Colors.white,
+                    elevation: 4,
+                  ),
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
+                    child: Text(
+                      'Français',
+                      style: TextStyle(
+                        color: _selectedLanguage == 'fr' ? Colors.white : Colors.black,
+                      ),
                     ),
-                  );
-                },
-                child: Text('OK'),
-              )
-            ],
-          ),
+                  ),
+                ),
+                const SizedBox(width: 16),
+                ElevatedButton(
+                  onPressed: () {
+                    _viewModel.selectedLanguage = 'en';
+                    setState(() {
+                      _selectedLanguage = 'en';
+                    });
+                    widget.onLanguageSelected('en');
+                  },
+                  style: ElevatedButton.styleFrom(
+                    shape: const StadiumBorder(),
+                    backgroundColor: _selectedLanguage == 'en' ? const Color(0xFF9CCC65) : Colors.white,
+                    elevation: 4,
+                  ),
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
+                    child: Text(
+                      'English',
+                      style: TextStyle(
+                        color: _selectedLanguage == 'en' ? Colors.white : Colors.black,
+                      ),
+                    ),
+                  ),
+                ),
+              ],
+            ),
+            const SizedBox(height: 20),
+            ElevatedButton(
+              onPressed: () {
+                // Use the current _selectedLanguage to navigate
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => GameScreen(viewModel: _viewModel, language: _selectedLanguage),
+                  ),
+                );
+              },
+              style: ElevatedButton.styleFrom(
+                shape: const StadiumBorder(),
+                backgroundColor: const Color(0xFF9CCC65),
+                elevation: 4,
+              ),
+              child: Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
+                child: Text(
+                  AppLocalizations.of(context)!.ok,
+                  style: const TextStyle(
+                    color: Colors.white,
+                  ),
+                ),
+              ),
+            ),
+          ],
         ),
       ),
     );

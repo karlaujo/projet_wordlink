@@ -52,4 +52,7 @@ class AppLocalizationsFr extends AppLocalizations {
   @override
   // TODO: implement verify
   String get verify => 'Vérifier';
+
+  @override
+  String get selectLanguage => 'Choisir Langue';
 }

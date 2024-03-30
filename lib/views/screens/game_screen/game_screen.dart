@@ -114,7 +114,7 @@ class _GameScreenState extends State<GameScreen> {
                   ),
                   child:  Padding(
                     padding: EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
-                    child: Text(translations.text('language')),
+                    child: Text(AppLocalizations.of(context)!.language),
                   ),
                 ),
                 ElevatedButton(
@@ -133,14 +133,14 @@ class _GameScreenState extends State<GameScreen> {
                   ),
                   child:  Padding(
                     padding: EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
-                    child: Text(translations.text('start Game')),
+                    child: Text(AppLocalizations.of(context)!.startGame),
                   ),
                 ),
               ],
             ),
             const SizedBox(height: 40),
             Text(
-              translations.text('select Level'),
+              AppLocalizations.of(context)!.selectLevel,
               textAlign: TextAlign.center,
               style: GoogleFonts.roboto(
                 fontSize: 24,
@@ -162,7 +162,7 @@ class _GameScreenState extends State<GameScreen> {
                   },
                   activeColor: const Color(0xFF9CCC65),
                 ),
-                Text(translations.text('easy')),
+                Text(AppLocalizations.of(context)!.easy),
                 const SizedBox(width: 20),
                 Radio(
                   value: 1,
@@ -174,7 +174,7 @@ class _GameScreenState extends State<GameScreen> {
                   },
                   activeColor: const Color(0xFF9CCC65),
                 ),
-                Text(translations.text('medium')),
+                Text(AppLocalizations.of(context)!.medium),
                 const SizedBox(width: 20),
                 Radio(
                   value: 2,
@@ -186,7 +186,7 @@ class _GameScreenState extends State<GameScreen> {
                   },
                   activeColor: const Color(0xFF9CCC65),
                 ),
-                Text(translations.text('hard')),
+                Text(AppLocalizations.of(context)!.hard),
               ],
             ),
           ],

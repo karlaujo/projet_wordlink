@@ -22,8 +22,8 @@ class _StartGameScreenState extends State<StartGameScreen> {
   final List<TextEditingController> _wordControllers = [];
   final GameViewModel _viewModel = GameViewModel(DictionaryRepositoryImpl(LocalDictionaryService()), TimerService());
 
-  final String _startWord =''; 
-  final String _endWord ='';
+  final String _startWord ='pan'; 
+  final String _endWord ='planter';
 
   @override
   void initState() {

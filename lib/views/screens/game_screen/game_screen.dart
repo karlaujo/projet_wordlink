@@ -5,6 +5,7 @@ import 'package:projet_wordlink/services/dictionary_service.dart';
 import 'package:projet_wordlink/services/translations.dart';
 import 'package:projet_wordlink/services/timer_service.dart';
 import 'package:projet_wordlink/viewmodels/game_view_model.dart';
+import 'package:projet_wordlink/views/screens/dictionary_selector/dictionary_selector.dart';
 import 'package:projet_wordlink/views/screens/language_selector/language_selector.dart';
 import 'package:projet_wordlink/views/screens/start_game_screen.dart';
 import 'package:projet_wordlink/generated/app_localizations.dart';
@@ -83,14 +84,23 @@ class _GameScreenState extends State<GameScreen> {
               children: [
                 ElevatedButton(
                   onPressed: () {
-                    // Handle dictionary selection
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => DictionarySelectorScreen(
+                          onDictionarySelected: (dictionaryUrl) {
+                            _viewModel.updateDictionaryUrl(dictionaryUrl);
+                          },
+                        ),
+                      ),
+                    );
                   },
                   style: ElevatedButton.styleFrom(
                     shape: const StadiumBorder(), backgroundColor: const Color(0xFF9CCC65),
                     elevation: 4,
                   ),
                   child:  Padding(
-                    padding: EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
+                    padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
                     child: Text(AppLocalizations.of(context)!.dictionary),
                   ),
                 ),
@@ -113,7 +123,7 @@ class _GameScreenState extends State<GameScreen> {
                     elevation: 4,
                   ),
                   child:  Padding(
-                    padding: EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
+                    padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
                     child: Text(AppLocalizations.of(context)!.language),
                   ),
                 ),
@@ -123,7 +133,7 @@ class _GameScreenState extends State<GameScreen> {
                     Navigator.push(
                       context,
                       MaterialPageRoute(
-                        builder: (context) => StartGameScreen(language: _language, selectedLevel: _selectedLevel,)
+                        builder: (context) => StartGameScreen(language: _language, selectedLevel: _selectedLevel, viewModel: _viewModel)
                       ),
                     );
                   },
@@ -132,7 +142,7 @@ class _GameScreenState extends State<GameScreen> {
                     elevation: 4,
                   ),
                   child:  Padding(
-                    padding: EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
+                    padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
                     child: Text(AppLocalizations.of(context)!.startGame),
                   ),
                 ),

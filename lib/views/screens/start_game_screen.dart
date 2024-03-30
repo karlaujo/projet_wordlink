@@ -5,6 +5,7 @@ import 'package:projet_wordlink/services/dictionary_service.dart';
 import 'package:projet_wordlink/services/timer_service.dart';
 import 'package:projet_wordlink/viewmodels/game_view_model.dart';
 import 'package:projet_wordlink/generated/app_localizations.dart';
+import 'package:projet_wordlink/viewmodels/game_view_model_provider.dart';
 import 'package:projet_wordlink/views/screens/game_screen/game_screen.dart';
 import 'package:projet_wordlink/views/widgets/timer_widget/timer_widget.dart';
 import 'package:provider/provider.dart';
@@ -12,7 +13,10 @@ import 'package:provider/provider.dart';
 class StartGameScreen extends StatefulWidget {
   final String language;
   final int selectedLevel;
-  const StartGameScreen({Key? key, required this.language, required this.selectedLevel}) : super(key: key);
+  final GameViewModel viewModel;
+  //GameViewModel get _viewModel => viewModel;
+  //int get _selectedLevel => selectedLevel;
+  const StartGameScreen({Key? key, required this.language, required this.selectedLevel, required this.viewModel}) : super(key: key);
 
   @override
   _StartGameScreenState createState() => _StartGameScreenState();
@@ -20,15 +24,31 @@ class StartGameScreen extends StatefulWidget {
 
 class _StartGameScreenState extends State<StartGameScreen> {
   final List<TextEditingController> _wordControllers = [];
-  final GameViewModel _viewModel = GameViewModel(DictionaryRepositoryImpl(LocalDictionaryService()), TimerService());
-
-  final String _startWord ='pan'; 
-  final String _endWord ='planter';
+  late final GameViewModel _viewModel;
+  
+  late String _startWord=''; 
+  late String _endWord='';
 
   @override
   void initState() {
     super.initState();
+    _viewModel = widget.viewModel;
+    setWords();
     _wordControllers.addAll(List.generate(_endWord.length - _startWord.length - 1, (index) => TextEditingController()));
+  }
+
+  void setWords(){
+    switch(widget.selectedLevel){
+      case 0:
+        _startWord = 'pan';
+        _endWord = 'planter';
+      case 1:
+        _startWord = 'pan2';
+        _endWord = 'planter';
+      case 2:
+        _startWord = 'pan3';
+        _endWord = 'planter';
+    }
   }
 
   @override

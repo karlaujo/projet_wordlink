@@ -76,8 +76,9 @@ class GameViewModel extends ChangeNotifier {
     final lastWord = _wordChain.last;
     final isLongerByOne = newWord.length == lastWord.length + 1;
     final containsAllLetters = lastWord.split('').every((char) => newWord.contains(char));
+    final lettersInEndWord = newWord.split('').every((char) => lastWord.contains(char));
     final existsInDictionary = await _dictionaryRepository.wordExists(newWord, _dictionaryUrl);
-    return isLongerByOne && containsAllLetters && existsInDictionary;
+    return isLongerByOne && containsAllLetters && existsInDictionary && lettersInEndWord;
   }
 }
 

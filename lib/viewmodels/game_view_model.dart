@@ -4,6 +4,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
 import 'package:projet_wordlink/repositories/dictionary_repository.dart';
 import 'package:projet_wordlink/services/timer_service.dart';
+import 'package:unicode/unicode.dart';
 
 class GameViewModel extends ChangeNotifier {
   final DictionaryRepository _dictionaryRepository;
@@ -66,35 +67,31 @@ class GameViewModel extends ChangeNotifier {
     notifyListeners();
   }
 
-  Future<bool> validateWord(String previousWord, String newWord, String endWord) async {
-  if (_wordChain.isEmpty) {
-    // Si la chaîne de mots est vide, cela signifie que nous validons le mot de départ
-    final existsInDictionary = await _dictionaryRepository.wordExists(newWord, _dictionaryUrl);
-    return existsInDictionary;
-  } if (newWord == endWord) {
-    // Si le nouveau mot est le mot cible, nous le validons
-    final isLongerByAtLeastTwo = newWord.length >= previousWord.length + 2;
-    final containsAllLetters = previousWord.split('').every((char) => newWord.contains(char));
-    final existsInDictionary = await _dictionaryRepository.wordExists(newWord, _dictionaryUrl);
-    return isLongerByAtLeastTwo && containsAllLetters && existsInDictionary;
-  }
-  // Pour les mots intermédiaires, nous utilisons les règles de validation existantes
-  final isLongerByOne = newWord.length == previousWord.length + 1;
-  final containsAllLetters = previousWord.split('').every((char) => newWord.contains(char));
-  final lettersInEndWord = newWord.split('').every((char) => endWord.contains(char));
-  final existsInDictionary = await _dictionaryRepository.wordExists(newWord, _dictionaryUrl);
-  return isLongerByOne && containsAllLetters && existsInDictionary && lettersInEndWord;
-  
+Future<bool> validateWordInChain(String previousWord, String newWord, String endWord) async {
+    // Remove accents from the words
+    final previousWordWithoutAccents = removeAccents(previousWord);
+    final newWordWithoutAccents = removeAccents(newWord);
+    final endWordWithoutAccents = removeAccents(endWord);
+
+    // For subsequent words, use the existing validation logic
+    final isLongerByOne = newWordWithoutAccents.length == previousWordWithoutAccents.length + 1;
+    final containsAllLetters = previousWordWithoutAccents.split('').every((char) => newWordWithoutAccents.contains(char));
+    final lettersInEndWord = newWordWithoutAccents.split('').every((char) => endWordWithoutAccents.contains(char));
+    final existsInDictionary = await _dictionaryRepository.wordExists(newWordWithoutAccents, _dictionaryUrl);
+    return isLongerByOne && containsAllLetters && existsInDictionary && lettersInEndWord;
 }
 
-Future<bool> validateWordInChain(String previousWord, String newWord, String endWord) async {
-    // For subsequent words, use the existing validation logic
-    final isLongerByOne = newWord.length == previousWord.length + 1;
-    final containsAllLetters = previousWord.split('').every((char) => newWord.contains(char));
-    final lettersInEndWord = newWord.split('').every((char) => endWord.contains(char));
-    final existsInDictionary = await _dictionaryRepository.wordExists(newWord, _dictionaryUrl);
-    return isLongerByOne && containsAllLetters && existsInDictionary && lettersInEndWord;
-  
+String removeAccents(String str) {
+
+  var withDia = 'ÀÁÂÃÄÅàáâãäåÒÓÔÕÕÖØòóôõöøÈÉÊËèéêëðÇçÐÌÍÎÏìíîïÙÚÛÜùúûüÑñŠšŸÿýŽž';
+  var withoutDia = 'AAAAAAaaaaaaOOOOOOOooooooEEEEeeeeeCcDIIIIiiiiUUUUuuuuNnSsYyyZz'; 
+
+  for (int i = 0; i < withDia.length; i++) {      
+    str = str.replaceAll(withDia[i], withoutDia[i]);
+  }
+
+  return str;
+
 }
 
   void startGame(String startWord, String targetWord) {
@@ -132,7 +129,7 @@ void _onTimerTick() {
 
 
   Future<void> addWord(String newWord) async {
-    _wordChain.add(newWord);
+    _wordChain.add(removeAccents(newWord));
     // if (newWord == _targetWord) {
     //   _endGame(success: true);
     // }
@@ -150,7 +147,7 @@ void _onTimerTick() {
   }
 
   void removeWord(String value) {
-    _wordChain.remove(value);
+    _wordChain.remove(removeAccents(value));
     // if (newWord == _targetWord) {
     //   _endGame(success: true);
     // }

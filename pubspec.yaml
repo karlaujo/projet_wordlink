@@ -42,6 +42,7 @@ dependencies:
   flutter_localizations:
     sdk: flutter
   intl: any
+  unicode: ^0.3.4
 
 dev_dependencies:
   flutter_test:

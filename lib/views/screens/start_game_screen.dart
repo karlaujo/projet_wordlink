@@ -43,11 +43,11 @@ class _StartGameScreenState extends State<StartGameScreen> {
         _startWord = 'pan';
         _endWord = 'planter';
       case 1:
-        _startWord = 'pan2';
-        _endWord = 'planter';
+        _startWord = 'am';
+        _endWord = 'amitié';
       case 2:
-        _startWord = 'pan3';
-        _endWord = 'planter';
+        _startWord = 'me';
+        _endWord = 'merveille';
     }
   }
 

@@ -11,7 +11,7 @@ class AppLocalizationsFr extends AppLocalizations {
   String get language => 'Langue';
 
   @override
-  String get startGame => 'Débuter Jeu';
+  String get startGame => 'Débuter';
 
   @override
   String get selectLevel => 'Sélectionner Niveau';

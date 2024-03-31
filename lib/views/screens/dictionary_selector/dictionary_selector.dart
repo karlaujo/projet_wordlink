@@ -58,9 +58,9 @@ class _DictionarySelectorScreenState extends State<DictionarySelectorScreen> {
                 shape: const StadiumBorder(), backgroundColor: const Color(0xFF9CCC65),
                 elevation: 4,
               ),
-              child: const Padding(
+              child: Padding(
                 padding: EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
-                child: Text('Use Default Dictionary'),
+                child: Text(AppLocalizations.of(context)!.useDefault,),
               ),
             ),
             const SizedBox(height: 16),
@@ -72,8 +72,8 @@ class _DictionarySelectorScreenState extends State<DictionarySelectorScreen> {
                     _dictionaryUrl = value;
                   });
                 },
-                decoration: const InputDecoration(
-                  hintText: 'Enter dictionary URL',
+                decoration: InputDecoration(
+                  hintText: AppLocalizations.of(context)!.enterURL,
                   filled: true,
                   fillColor: Colors.white,
                   border: OutlineInputBorder(),
@@ -93,9 +93,9 @@ class _DictionarySelectorScreenState extends State<DictionarySelectorScreen> {
                 backgroundColor: const Color(0xFF9CCC65),
                 elevation: 4,
               ),
-              child: const Padding(
+              child: Padding(
                 padding: EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
-                child: Text('Use Dictionary from URL'),
+                child: Text(AppLocalizations.of(context)!.useFromURL),
               ),
             ),
             const Spacer(),
@@ -110,9 +110,9 @@ class _DictionarySelectorScreenState extends State<DictionarySelectorScreen> {
                   backgroundColor: const Color(0xFF9CCC65),
                   elevation: 4,
                 ),
-                child: const Padding(
+                child: Padding(
                   padding: EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
-                  child: Text('Cancel'),
+                  child: Text(AppLocalizations.of(context)!.cancel),
                 ),
               ),
             ),

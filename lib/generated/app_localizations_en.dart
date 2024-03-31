@@ -55,4 +55,16 @@ class AppLocalizationsEn extends AppLocalizations {
   @override
   String get selectLanguage => 'Select Language';
 
+  @override
+  String get useDefault => 'Use Default';
+
+  @override
+  String get enterURL => 'Enter Dictionary URL';
+
+  @override
+  String get useFromURL => 'Use Dictionary From URL';
+
+  @override
+  String get cancel => 'Cancel';
+
 }

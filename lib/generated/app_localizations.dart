@@ -152,6 +152,14 @@ abstract class AppLocalizations {
   String get ok => 'Ok';
 
   String get selectLanguage;
+
+  String get useDefault;
+
+  String get enterURL;
+
+  String get useFromURL;
+
+  String get cancel;
 }
 
 class _AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {

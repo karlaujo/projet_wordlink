@@ -55,4 +55,16 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String get selectLanguage => 'Choisir Langue';
+
+  @override
+  String get useDefault => 'Dictionnaire Défault';
+
+  @override
+  String get enterURL => 'Entrer URL du Dictionnaire';
+
+  @override
+  String get useFromURL => 'Utiliser Dictionnaire du URL';
+
+  @override
+  String get cancel => 'Annuler';
 }

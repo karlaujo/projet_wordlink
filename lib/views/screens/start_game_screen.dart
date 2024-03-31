@@ -161,7 +161,7 @@ class _StartGameScreenState extends State<StartGameScreen> {
                 style: TextStyle(
                   fontSize: 24.0,
                   fontWeight: FontWeight.bold,
-                  color: Colors.white,
+                  color: const Color(0xFF6B8E23),
                   shadows: [
                     Shadow(
                       color: Colors.black.withOpacity(0.5),

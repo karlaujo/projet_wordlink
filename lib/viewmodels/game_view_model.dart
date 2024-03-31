@@ -4,7 +4,6 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
 import 'package:projet_wordlink/repositories/dictionary_repository.dart';
 import 'package:projet_wordlink/services/timer_service.dart';
-import 'package:unicode/unicode.dart';
 
 class GameViewModel extends ChangeNotifier {
   final DictionaryRepository _dictionaryRepository;

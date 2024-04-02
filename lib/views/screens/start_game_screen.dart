@@ -25,7 +25,7 @@ class StartGameScreen extends StatefulWidget {
 class _StartGameScreenState extends State<StartGameScreen> {
   final List<TextEditingController> _wordControllers = [];
   late final GameViewModel _viewModel;
-  
+  late TimerService _timerService;
   late String _startWord=''; 
   late String _endWord='';
 
@@ -33,6 +33,7 @@ class _StartGameScreenState extends State<StartGameScreen> {
   void initState() {
     super.initState();
     _viewModel = widget.viewModel;
+    _timerService = Provider.of<TimerService>(context, listen: false);
     setWords();
     _wordControllers.addAll(List.generate(_endWord.length - _startWord.length - 1, (index) => TextEditingController()));
   }
@@ -61,8 +62,7 @@ class _StartGameScreenState extends State<StartGameScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Provider<TimerService>(create: (context) => TimerService(),
-    child: Scaffold(
+    return Scaffold(
       body: Container(
         decoration: const BoxDecoration(
           gradient: LinearGradient(
@@ -120,6 +120,10 @@ class _StartGameScreenState extends State<StartGameScreen> {
             const SizedBox(height: 16.0),
             ElevatedButton(
               onPressed: () async {
+                final remainingSeconds = _timerService.remainingSeconds;
+                final minutes = (remainingSeconds / 60).floor();
+                final seconds = remainingSeconds % 60;
+                _timerService.stop();
                 final words = [_startWord, ..._wordControllers.map((controller) => controller.text.trim()), _endWord];
                 bool isValid = true;
                 for (int i = 1; i < words.length; i++) {
@@ -130,7 +134,7 @@ class _StartGameScreenState extends State<StartGameScreen> {
                   context: context,
                   builder: (context) => AlertDialog(
                     title: Text(isValid ? AppLocalizations.of(context)!.validChain : AppLocalizations.of(context)!.invalidChain),
-                    content: Text(isValid ? AppLocalizations.of(context)!.validChainMessage : AppLocalizations.of(context)!.invalidChainMessage),
+                    content: Text(isValid ? '${AppLocalizations.of(context)!.time} : ${minutes.toString().padLeft(2, '0')}:${seconds.toString().padLeft(2, '0')} \n${AppLocalizations.of(context)!.validChainMessage}' : AppLocalizations.of(context)!.invalidChainMessage),
                     actions: [
                       TextButton(
                         onPressed: () { Navigator.pop(context);
@@ -163,7 +167,7 @@ class _StartGameScreenState extends State<StartGameScreen> {
             Padding(
               padding: const EdgeInsets.all(16.0),
               child: TimerWidget(
-                timerService: Provider.of<TimerService>(context),
+                timerService: _timerService,
                 style: TextStyle(
                   fontSize: 24.0,
                   fontWeight: FontWeight.bold,
@@ -181,7 +185,6 @@ class _StartGameScreenState extends State<StartGameScreen> {
           ],
         ),
       ),
-    )
     );
   }
 

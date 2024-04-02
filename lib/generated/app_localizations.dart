@@ -160,6 +160,8 @@ abstract class AppLocalizations {
   String get useFromURL;
 
   String get cancel;
+
+  String get time;
 }
 
 class _AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {

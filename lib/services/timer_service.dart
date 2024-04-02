@@ -2,6 +2,7 @@ import 'dart:async';
 
 class TimerService {
   Timer? _timer;
+  Timer? get timer => _timer;
   int _remainingSeconds = 120;
   final StreamController<int> _timeController = StreamController<int>.broadcast();
   Stream<int> get timeStream => _timeController.stream;

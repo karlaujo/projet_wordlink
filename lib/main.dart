@@ -4,15 +4,16 @@ import 'package:projet_wordlink/services/dictionary_service.dart';
 import 'package:projet_wordlink/services/timer_service.dart';
 import 'package:projet_wordlink/viewmodels/game_view_model.dart';
 import 'package:projet_wordlink/views/screens/game_screen/game_screen.dart';
-import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:projet_wordlink/generated/app_localizations.dart';
 import 'package:provider/provider.dart';
 
 void main() {
-  runApp(MyApp());
+  runApp(const MyApp());
 }
 
 class MyApp extends StatelessWidget {
+  const MyApp({super.key});
+
   @override
   Widget build(BuildContext context) {
     return ChangeNotifierProvider(

@@ -14,8 +14,6 @@ class GameViewModel extends ChangeNotifier {
   String _targetWord = '';
   List<String> _wordChain = [];
   List<String> get wordChain => _wordChain;
-  bool _isGameRunning = false;
-  int _remainingSeconds = 120;
   String _dictionaryUrl = 'lib/ressources/assets/dictionary.json'; // Default dictionary path
   bool _gameStarted = false;
   bool get gameStarted => _gameStarted;
@@ -97,9 +95,7 @@ String removeAccents(String str) {
   _startWord = startWord;
   _targetWord = targetWord;
   _wordChain = [_startWord];
-  _isGameRunning = true;
-  _remainingSeconds = 120; // Reset remaining seconds if needed
-  _timerService.start(); // Start the timer
+  _timerService.start(); 
   int numberOfBubbles = _targetWord.length - _startWord.length - 1;
   _emptyBubbles = List<String>.filled(numberOfBubbles, "");
   _gameStarted = true;
@@ -110,20 +106,17 @@ void restartGame() {
   _wordChain.clear();
   _emptyBubbles.clear();
   _gameStarted = false;
-  _isGameRunning = false;
-  _timerService.stop(); // Stop the timer
+  _timerService.stop(); 
   notifyListeners();
 }
 
 void _endGame({bool success = false}) {
-  _isGameRunning = false;
-  _timerService.stop(); // Stop the timer
+  _timerService.stop(); 
   notifyListeners();
 }
 
 void _onTimerTick() {
-  _remainingSeconds = _timerService.remainingSeconds; // Update remaining seconds from TimerService
-  notifyListeners(); // Notify listeners to update UI or other components
+  notifyListeners(); 
 }
 
 

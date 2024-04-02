@@ -1,11 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:projet_wordlink/repositories/dictionary_repository.dart';
-import 'package:projet_wordlink/services/dictionary_service.dart';
 import 'package:projet_wordlink/services/timer_service.dart';
 import 'package:projet_wordlink/viewmodels/game_view_model.dart';
 import 'package:projet_wordlink/generated/app_localizations.dart';
-import 'package:projet_wordlink/viewmodels/game_view_model_provider.dart';
 import 'package:projet_wordlink/views/screens/game_screen/game_screen.dart';
 import 'package:projet_wordlink/views/widgets/timer_widget/timer_widget.dart';
 import 'package:provider/provider.dart';
@@ -41,14 +38,14 @@ class _StartGameScreenState extends State<StartGameScreen> {
   void setWords(){
     switch(widget.selectedLevel){
       case 0:
-        _startWord = 'pan';
+        _startWord = 'pan'; //pan plane plante planter
         _endWord = 'planter';
       case 1:
-        _startWord = 'am';
-        _endWord = 'amitié';
+        _startWord = 'it'; //it tui etui outie outvie
+        _endWord = 'voiture';
       case 2:
-        _startWord = 'me';
-        _endWord = 'merveille';
+        _startWord = 'me'; //me mere mervi mervil vermeil
+        _endWord = 'vermeil';
     }
   }
 

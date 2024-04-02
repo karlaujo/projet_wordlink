@@ -1,8 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:projet_wordlink/repositories/dictionary_repository.dart';
-import 'package:projet_wordlink/services/dictionary_service.dart';
-import 'package:projet_wordlink/services/translations.dart';
 import 'package:projet_wordlink/services/timer_service.dart';
 import 'package:projet_wordlink/viewmodels/game_view_model.dart';
 import 'package:projet_wordlink/views/screens/dictionary_selector/dictionary_selector.dart';

@@ -59,7 +59,7 @@ class _DictionarySelectorScreenState extends State<DictionarySelectorScreen> {
                 elevation: 4,
               ),
               child: Padding(
-                padding: EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
+                padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
                 child: Text(AppLocalizations.of(context)!.useDefault,),
               ),
             ),
@@ -76,7 +76,7 @@ class _DictionarySelectorScreenState extends State<DictionarySelectorScreen> {
                   hintText: AppLocalizations.of(context)!.enterURL,
                   filled: true,
                   fillColor: Colors.white,
-                  border: OutlineInputBorder(),
+                  border: const OutlineInputBorder(),
                 ),
               ),
             ),
@@ -94,7 +94,7 @@ class _DictionarySelectorScreenState extends State<DictionarySelectorScreen> {
                 elevation: 4,
               ),
               child: Padding(
-                padding: EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
+                padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
                 child: Text(AppLocalizations.of(context)!.useFromURL),
               ),
             ),
@@ -111,7 +111,7 @@ class _DictionarySelectorScreenState extends State<DictionarySelectorScreen> {
                   elevation: 4,
                 ),
                 child: Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
+                  padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
                   child: Text(AppLocalizations.of(context)!.cancel),
                 ),
               ),

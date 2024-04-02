@@ -111,6 +111,7 @@ class _StartGameScreenState extends State<StartGameScreen> {
             ),
             const SizedBox(height: 16.0),
             Expanded(
+              flex : 12,
               child: SingleChildScrollView(
                 child: Column(
                   children: [..._buildWordTextFields()],

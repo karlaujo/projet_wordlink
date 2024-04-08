@@ -101,7 +101,7 @@ class _GameScreenState extends State<GameScreen> {
                             MaterialPageRoute(
                               builder: (context) => LanguageSelectorScreen(
                                 onLanguageSelected: (language) {
-                                  _viewModel.setLanguage(language);
+                                  _viewModel.selectedLanguage = language;
                                   print('Selected language: $language');
                                   
                                 }, 

@@ -41,10 +41,10 @@ class _StartGameScreenState extends State<StartGameScreen> {
         _startWord = 'pan'; //pan plane plante planter
         _endWord = 'planter';
       case 1:
-        _startWord = 'it'; //it tui etui outie outvie
+        _startWord = 'it'; //it tui etui outie outvie voiture
         _endWord = 'voiture';
       case 2:
-        _startWord = 'me'; //me mere mervi mervil vermeil
+        _startWord = 'li'; //li lie lier livre relive vermeil
         _endWord = 'vermeil';
     }
   }

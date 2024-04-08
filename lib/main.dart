@@ -27,8 +27,8 @@ class MyApp extends StatelessWidget {
             title: 'WordLink',
             localizationsDelegates: AppLocalizations.localizationsDelegates,
             supportedLocales: AppLocalizations.supportedLocales,
-            locale: Locale(viewModel.language),
-            home: GameScreen(viewModel: viewModel, language: viewModel.language),
+            locale: Locale(viewModel.selectedLanguage),
+            home: GameScreen(viewModel: viewModel, language: viewModel.selectedLanguage),
           );
         },
       ),
